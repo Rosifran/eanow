@@ -60,10 +60,6 @@ def health():
     return jsonify({"status": "ok", "version": "0.1.0"})
 
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5050)
-
-
 # ── Script Engine endpoints ──────────────────────────────────────────────────
 
 from core.script_engine import ScriptEngine
@@ -102,3 +98,7 @@ def script():
 
     result = script_engine.build_result(answers, goal_id)
     return jsonify(result)
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5050)

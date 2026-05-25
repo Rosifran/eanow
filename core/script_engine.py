@@ -140,11 +140,15 @@ class ScriptEngine:
         ]
 
         # Produtos do objetivo
+        goal_product_ids = goal_data.get("products", [])
         goal_products = [
             self.products[pid]
-            for pid in goal_data.get("products", [])
+            for pid in goal_product_ids
             if pid in self.products
         ]
+
+        # Universo completo para o mapa visual risco × liquidez
+        universe_products = self.build_product_universe(profile, goal_product_ids)
 
         return {
             "profile": profile,
@@ -163,9 +167,91 @@ class ScriptEngine:
             "primary_products": primary,
             "secondary_products": secondary,
             "goal_products": goal_products,
+            "universe_products": universe_products,
             "not_yet": profile_data.get("not_yet", []),
             "source": "Survey of Consumer Finances · Federal Reserve · Pesquisa de mestrado RF/UMass Boston",
         }
+
+    def build_product_universe(self, profile: str, goal_product_ids: list) -> list:
+        """
+        Converte a base de produtos em bolhas para o mapa risco × liquidez.
+        X = risco percebido. Y = liquidez/acessibilidade do dinheiro.
+        A adequação combina perfil comportamental + objetivo escolhido.
+        """
+        profile_data = self.profile_map[profile]
+        primary_ids = set(profile_data.get("primary_products", []))
+        secondary_ids = set(profile_data.get("secondary_products", []))
+        not_yet_ids = set(profile_data.get("not_yet", []))
+        goal_ids = set(goal_product_ids or [])
+
+        risk_axis = {
+            "muito_baixo": 12,
+            "baixo": 28,
+            "medio": 54,
+            "alto": 82,
+            "variavel": 64,
+        }
+        liquidity_axis = {
+            "baixa": 22,
+            "media": 52,
+            "alta": 84,
+            "variavel": 62,
+        }
+
+        # Pequenos deslocamentos para evitar sobreposição perfeita no gráfico.
+        offsets = {
+            "tesouro_selic": (-4, 5),
+            "cdb": (2, -4),
+            "lci_lca": (-3, -3),
+            "fundo_renda_fixa": (4, 2),
+            "tesouro_ipca": (-2, 1),
+            "fundo_multimercado": (5, -2),
+            "fiis": (-4, 4),
+            "etf_brasil": (2, 0),
+            "acoes": (7, 5),
+            "previdencia_pgbl_vgbl": (5, -5),
+        }
+
+        universe = []
+        for pid, product in self.products.items():
+            if pid in primary_ids:
+                fit = "primary"
+                fit_label = "Iluminado para seu perfil"
+                fit_score = 100
+            elif pid in secondary_ids:
+                fit = "secondary"
+                fit_label = "Pode explorar depois"
+                fit_score = 72
+            elif pid in goal_ids:
+                fit = "goal"
+                fit_label = "Conecta com seu sonho"
+                fit_score = 64
+            elif pid in not_yet_ids:
+                fit = "not_yet"
+                fit_label = "Talvez ainda não"
+                fit_score = 24
+            else:
+                fit = "neutral"
+                fit_label = "Neutro no seu mapa"
+                fit_score = 42
+
+            dx, dy = offsets.get(pid, (0, 0))
+            x = min(94, max(6, risk_axis.get(product.get("risk"), 50) + dx))
+            y = min(94, max(6, liquidity_axis.get(product.get("liquidity"), 50) + dy))
+
+            item = dict(product)
+            item.update({
+                "x": x,
+                "y": y,
+                "fit": fit,
+                "fit_label": fit_label,
+                "fit_score": fit_score,
+                "matches_goal": pid in goal_ids,
+                "matches_profile": pid in primary_ids or pid in secondary_ids,
+            })
+            universe.append(item)
+
+        return sorted(universe, key=lambda p: p["fit_score"], reverse=True)
 
     def get_questions(self) -> list:
         return self.questions
