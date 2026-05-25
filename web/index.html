@@ -5,30 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>e agora?</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
   :root {
-    --blue: #185FA5;
-    --blue-light: #E6F1FB;
-    --blue-dark: #0C447C;
-    --text: #1a1a1a;
-    --text-muted: #6b6b6b;
-    --text-hint: #9b9b9b;
-    --border: rgba(0,0,0,0.12);
-    --border-strong: rgba(0,0,0,0.25);
-    --bg: #ffffff;
-    --bg-secondary: #f7f6f3;
-    --radius: 8px;
-    --radius-lg: 12px;
+    --ink: #0f0f0f;
+    --ink-2: #3d3d3d;
+    --ink-3: #787878;
+    --ink-4: #b0b0b0;
+    --paper: #fafaf8;
+    --paper-2: #f2f1ee;
+    --paper-3: #e8e7e3;
+    --accent: #1a56db;
+    --accent-bg: #eff4ff;
+    --accent-text: #1e429f;
+    --success: #057a55;
+    --border: rgba(0,0,0,0.08);
+    --border-md: rgba(0,0,0,0.14);
+    --r: 6px;
+    --r-lg: 10px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  html { font-size: 16px; }
+
   body {
-    font-family: 'IBM Plex Sans', sans-serif;
-    color: var(--text);
-    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
 
   /* ── Topbar ── */
@@ -36,468 +42,813 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 40px;
-    border-bottom: 0.5px solid var(--border);
+    padding: 0 48px;
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+    background: var(--paper);
   }
+
   .logo {
-    font-family: 'Lora', serif;
-    font-size: 16px;
-    font-weight: 600;
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
   }
-  .logo span { color: var(--blue); }
-  .nav-links { display: flex; gap: 24px; }
-  .nav-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; }
-  .nav-links a:hover { color: var(--text); }
+
+  .logo em { font-style: italic; color: var(--ink-3); }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav a {
+    font-size: 13px;
+    color: var(--ink-3);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .nav a:hover { color: var(--ink); }
 
   /* ── Telas ── */
   .screen { display: none; }
   .screen.active { display: block; }
 
-  /* ── Entrada ── */
-  .entry {
-    max-width: 560px;
-    margin: 72px auto;
-    padding: 0 24px;
-  }
-  .kicker {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 16px;
-  }
-  .entry h1 {
-    font-family: 'Lora', serif;
-    font-size: 34px;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 14px;
-  }
-  .entry-sub {
-    font-size: 15px;
-    color: var(--text-muted);
-    line-height: 1.75;
-    margin-bottom: 40px;
+  /* ── ENTRADA ── */
+  .entry-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 56px);
   }
 
-  .field-label {
-    font-size: 12px;
-    color: var(--text-muted);
+  .entry-left {
+    padding: 80px 64px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .entry-right {
+    padding: 80px 64px;
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .entry-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 20px;
+  }
+
+  .entry-h {
+    font-family: 'Instrument Serif', serif;
+    font-size: 52px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .entry-h em {
+    font-style: italic;
+    color: var(--ink-3);
+  }
+
+  .entry-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink-2);
+    max-width: 380px;
+    margin-bottom: 48px;
+  }
+
+  .entry-proof {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .proof-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .proof-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ink-4);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .proof-item p {
+    font-size: 13.5px;
+    color: var(--ink-3);
+    line-height: 1.5;
+  }
+
+  .proof-item strong {
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+
+  /* Form lado direito */
+  .form-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
     margin-bottom: 10px;
   }
 
-  .amount-row {
+  .amount-field {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 28px;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 32px;
+    border-bottom: 1.5px solid var(--ink-4);
+    padding-bottom: 10px;
   }
-  .amount-row span {
-    font-size: 22px;
-    color: var(--text-muted);
+
+  .amount-field:focus-within {
+    border-bottom-color: var(--ink);
+  }
+
+  .amount-prefix {
     font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--ink-3);
   }
+
   .amount-input {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 22px;
+    font-size: 32px;
+    font-weight: 500;
     border: none;
-    border-bottom: 1.5px solid var(--border-strong);
     background: transparent;
-    color: var(--text);
-    width: 160px;
-    padding: 4px 0;
+    color: var(--ink);
+    width: 200px;
     outline: none;
+    letter-spacing: -0.02em;
   }
-  .amount-input:focus { border-bottom-color: var(--blue); }
-  .amount-suffix { font-size: 13px; color: var(--text-hint); }
 
-  .sit-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 28px;
+  .amount-suffix {
+    font-size: 13px;
+    color: var(--ink-3);
   }
-  .sit-card {
-    border: 0.5px solid var(--border-strong);
-    border-radius: var(--radius);
-    padding: 12px 14px;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .sit-card:hover { border-color: var(--blue); }
-  .sit-card.sel { border: 1.5px solid var(--blue); background: var(--blue-light); }
-  .sit-card .sk {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-hint);
-    margin-bottom: 4px;
-  }
-  .sit-card p { font-size: 13px; line-height: 1.45; }
 
-  .reserve-row {
+  .options-grid {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 8px;
     margin-bottom: 32px;
   }
-  .reserve-btn {
-    flex: 1;
-    padding: 10px;
-    border: 0.5px solid var(--border-strong);
-    border-radius: var(--radius);
-    background: transparent;
-    cursor: pointer;
-    font-size: 13px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    color: var(--text);
-    transition: border-color 0.15s;
-  }
-  .reserve-btn:hover { border-color: var(--blue); }
-  .reserve-btn.sel { border: 1.5px solid var(--blue); background: var(--blue-light); color: var(--blue-dark); font-weight: 500; }
 
-  .btn-primary {
-    background: var(--blue);
-    color: #fff;
-    border: none;
-    font-size: 14px;
-    padding: 12px 28px;
-    border-radius: var(--radius);
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--border-md);
+    border-radius: var(--r);
     cursor: pointer;
-    font-family: 'IBM Plex Sans', sans-serif;
+    background: white;
+    transition: border-color 0.12s, background 0.12s;
+  }
+
+  .opt:hover { border-color: var(--ink-3); }
+
+  .opt.sel {
+    border-color: var(--ink);
+    background: white;
+  }
+
+  .opt-radio {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-md);
+    margin-top: 2px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.12s;
+  }
+
+  .opt.sel .opt-radio {
+    border-color: var(--ink);
+    background: var(--ink);
+  }
+
+  .opt.sel .opt-radio::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  .opt-content {}
+  .opt-title { font-size: 13.5px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+  .opt-desc { font-size: 12.5px; color: var(--ink-3); line-height: 1.4; }
+
+  .reserve-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 36px;
+  }
+
+  .res-btn {
+    padding: 11px 16px;
+    border: 1px solid var(--border-md);
+    border-radius: var(--r);
+    background: white;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink-2);
+    text-align: center;
+    transition: all 0.12s;
+  }
+
+  .res-btn:hover { border-color: var(--ink-3); }
+  .res-btn.sel { border-color: var(--ink); color: var(--ink); font-weight: 500; background: white; }
+
+  .btn-cta {
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: var(--r);
+    font-size: 14px;
     font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    letter-spacing: -0.01em;
     transition: opacity 0.15s;
   }
-  .btn-primary:hover { opacity: 0.9; }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-  .entry-note {
-    font-size: 12px;
-    color: var(--text-hint);
+
+  .btn-cta:hover { opacity: 0.85; }
+  .btn-cta:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .form-note {
+    font-size: 11.5px;
+    color: var(--ink-4);
     margin-top: 12px;
+    text-align: center;
+    letter-spacing: -0.01em;
   }
 
-  /* ── Painel ── */
-  .panel-layout {
+  /* ── PAINEL ── */
+  .panel-wrap {
     display: grid;
-    grid-template-columns: 220px 1fr;
-    min-height: calc(100vh - 53px);
+    grid-template-columns: 240px 1fr;
+    min-height: calc(100vh - 56px);
   }
 
   .sidebar {
-    border-right: 0.5px solid var(--border);
-    padding: 24px 0;
+    border-right: 1px solid var(--border);
+    padding: 32px 0;
+    background: var(--paper);
   }
-  .sb-section { padding: 0 16px; margin-bottom: 20px; }
-  .sb-section-label {
+
+  .sb-group { margin-bottom: 24px; }
+
+  .sb-group-label {
     font-size: 10px;
+    font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-hint);
-    margin-bottom: 8px;
-    padding: 0 4px;
+    color: var(--ink-4);
+    padding: 0 20px;
+    margin-bottom: 6px;
   }
-  .sb-item {
+
+  .sb-link {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 7px 8px;
-    border-radius: var(--radius);
-    font-size: 13px;
-    color: var(--text-muted);
+    gap: 10px;
+    padding: 8px 20px;
+    font-size: 13.5px;
+    color: var(--ink-2);
     cursor: pointer;
-    margin-bottom: 2px;
-    transition: background 0.1s;
+    border-left: 2px solid transparent;
+    transition: all 0.1s;
   }
-  .sb-item:hover { background: var(--bg-secondary); }
-  .sb-item.active { background: var(--bg-secondary); color: var(--text); font-weight: 500; }
-  .sb-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  .sb-link:hover { color: var(--ink); background: var(--paper-2); }
+
+  .sb-link.active {
+    color: var(--ink);
+    font-weight: 500;
+    border-left-color: var(--ink);
+    background: var(--paper-2);
+  }
+
+  .sb-link svg { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.6; }
+  .sb-link.active svg { opacity: 1; }
+
+  .sb-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 20px;
+  }
 
   .sb-ctx {
-    margin: 16px 16px 0;
-    background: var(--bg-secondary);
-    border-radius: var(--radius);
-    padding: 10px 12px;
+    margin: 0 16px;
+    padding: 12px 14px;
+    background: var(--paper-2);
+    border-radius: var(--r);
+    border: 1px solid var(--border);
   }
-  .sb-ctx strong { font-size: 12px; display: block; margin-bottom: 4px; }
-  .sb-ctx p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  .sb-ctx-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: 6px;
+  }
+
+  .sb-ctx-val {
+    font-size: 12.5px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
 
   .main {
-    padding: 32px 36px;
-    max-width: 680px;
+    padding: 48px 56px;
+    max-width: 740px;
   }
-  .main-header { margin-bottom: 24px; }
-  .main-header h2 {
-    font-family: 'Lora', serif;
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  .main-source { font-size: 11.5px; color: var(--text-hint); }
 
-  .insight {
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 16px 20px;
-    margin-bottom: 12px;
-  }
-  .insight.featured { border-color: var(--blue); border-width: 1.5px; }
-  .insight-label {
-    font-size: 10.5px;
-    letter-spacing: 0.08em;
+  .main-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-hint);
-    margin-bottom: 8px;
-  }
-  .insight.featured .insight-label { color: var(--blue); }
-  .insight h3 { font-size: 14px; font-weight: 500; margin-bottom: 6px; line-height: 1.4; }
-  .insight p { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
-
-  .actions-list { margin: 6px 0 0; }
-  .action-item {
-    border-top: 0.5px solid var(--border);
-    padding: 10px 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .action-item:first-child { border-top: none; }
-  .action-what { font-size: 13px; line-height: 1.55; }
-  .action-outcome { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
-  .action-time { font-size: 11px; color: var(--text-hint); margin-top: 4px; }
-
-  .concepts-block {
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    margin-top: 12px;
-  }
-  .concepts-label {
-    font-size: 10.5px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-hint);
+    color: var(--ink-4);
     margin-bottom: 10px;
   }
-  .concept-row {
-    display: flex;
-    gap: 12px;
-    padding: 7px 0;
-    border-top: 0.5px solid var(--border);
-    align-items: flex-start;
-  }
-  .concept-row:first-of-type { border-top: none; }
-  .concept-term { font-size: 13px; font-weight: 500; min-width: 140px; }
-  .concept-def { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; }
 
-  .next-q {
-    background: var(--blue-light);
-    border-radius: var(--radius);
-    padding: 14px 18px;
-    margin-top: 16px;
+  .main-h {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.2;
   }
-  .next-q-label {
-    font-size: 10.5px;
-    letter-spacing: 0.08em;
+
+  .main-source {
+    font-size: 12px;
+    color: var(--ink-4);
+    margin-bottom: 36px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .card {
+    border: 1px solid var(--border-md);
+    border-radius: var(--r-lg);
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    background: white;
+  }
+
+  .card.featured {
+    border-color: var(--ink);
+    background: white;
+  }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 8px;
+    color: var(--ink-4);
+    margin-bottom: 12px;
   }
-  .next-q p { font-size: 14px; color: var(--blue-dark); line-height: 1.65; font-family: 'Lora', serif; font-style: italic; }
 
-  .btn-secondary {
-    background: transparent;
-    color: var(--text-muted);
-    border: 0.5px solid var(--border-strong);
-    font-size: 13px;
-    padding: 8px 18px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-family: 'IBM Plex Sans', sans-serif;
-    margin-top: 24px;
-    transition: background 0.1s;
+  .card.featured .card-label { color: var(--ink-2); }
+
+  .card-h {
+    font-family: 'Instrument Serif', serif;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    color: var(--ink);
   }
-  .btn-secondary:hover { background: var(--bg-secondary); }
+
+  .card p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--ink-2);
+  }
+
+  /* Barras de dados */
+  .data-table {
+    margin: 20px 0 4px;
+  }
+
+  .data-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .data-row:first-child { border-top: none; }
+
+  .data-label {
+    font-size: 12.5px;
+    color: var(--ink-2);
+    min-width: 200px;
+    line-height: 1.3;
+  }
+
+  .data-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--paper-3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .data-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--ink);
+    transition: width 0.6s ease;
+  }
+
+  .data-fill.accent { background: var(--accent); }
+  .data-fill.muted { background: var(--ink-4); }
+
+  .data-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  /* Ações */
+  .action-list { margin-top: 4px; }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .action-row:first-child { border-top: none; }
+
+  .action-what {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .action-when {
+    font-size: 11.5px;
+    color: var(--ink-4);
+    margin-top: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .action-result {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+
+  /* Glossário */
+  .gloss-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 20px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+    align-items: baseline;
+  }
+
+  .gloss-row:first-child { border-top: none; }
+
+  .gloss-term {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .gloss-def {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  /* Próxima pergunta */
+  .next-q {
+    margin-top: 20px;
+    padding: 20px 24px;
+    border: 1px solid var(--border-md);
+    border-radius: var(--r-lg);
+    background: var(--paper-2);
+  }
+
+  .next-q-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: 10px;
+  }
+
+  .next-q-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-back {
+    margin-top: 28px;
+    padding: 9px 18px;
+    background: transparent;
+    border: 1px solid var(--border-md);
+    border-radius: var(--r);
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .btn-back:hover { border-color: var(--ink-3); color: var(--ink); }
 
   .loading {
-    text-align: center;
-    padding: 60px 0;
-    color: var(--text-hint);
+    padding: 80px 0;
+    color: var(--ink-4);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  /* fonte tab */
+  .source-card {
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    background: white;
+  }
+
+  .source-card-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: 8px;
+  }
+
+  .source-card h3 {
     font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .source-card p {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.7;
   }
 </style>
 </head>
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
-  <div class="logo">e agora<span>?</span></div>
-  <div class="nav-links">
+  <div class="logo">e agora<em>?</em></div>
+  <nav class="nav">
     <a href="#">como funciona</a>
     <a href="#">a pesquisa</a>
-  </div>
+  </nav>
 </div>
 
 <!-- TELA 1: ENTRADA -->
 <div id="screen-entry" class="screen active">
-  <div class="entry">
-    <p class="kicker">Inteligência para decisão patrimonial</p>
-    <h1>Sobrou dinheiro.<br>E agora?</h1>
-    <p class="entry-sub">
-      Você já pagou o que tinha para pagar. Agora tem alguma coisa sobrando —
-      e o mercado financeiro não fala com você de um jeito que faça sentido.
-      A plataforma mostra o que pessoas na sua situação fizeram. Você decide.
-    </p>
+  <div class="entry-wrap">
 
-    <p class="field-label">Quanto está sobrando por mês, mais ou menos?</p>
-    <div class="amount-row">
-      <span>R$</span>
-      <input class="amount-input" type="text" id="monthly-amount" value="1.200" />
-      <span class="amount-suffix">/ mês</span>
-    </div>
-
-    <p class="field-label">Qual é a sua situação agora?</p>
-    <div class="sit-grid">
-      <div class="sit-card sel" data-situation="estabilidade" onclick="selectSituation(this)">
-        <p class="sk">estabilidade</p>
-        <p>Emprego fixo, contas em dia, sem dívidas</p>
-      </div>
-      <div class="sit-card" data-situation="transicao" onclick="selectSituation(this)">
-        <p class="sk">transição</p>
-        <p>Mudei de emprego ou virei autônomo recentemente</p>
-      </div>
-      <div class="sit-card" data-situation="acumulando" onclick="selectSituation(this)">
-        <p class="sk">acumulando</p>
-        <p>Já tenho alguma reserva mas não sei o que fazer</p>
+    <div class="entry-left">
+      <p class="entry-eyebrow">Inteligência patrimonial</p>
+      <h1 class="entry-h">Sobrou<br>dinheiro.<br><em>E agora?</em></h1>
+      <p class="entry-body">
+        Você já pagou o que tinha para pagar. Agora tem alguma coisa sobrando — e o mercado financeiro não fala com você de um jeito que faça sentido.
+      </p>
+      <div class="entry-proof">
+        <div class="proof-item">
+          <div class="proof-dot"></div>
+          <p><strong>Dados reais.</strong> Survey of Consumer Finances, Federal Reserve americano.</p>
+        </div>
+        <div class="proof-item">
+          <div class="proof-dot"></div>
+          <p><strong>Sem cadastro.</strong> Sem coleta de dados financeiros.</p>
+        </div>
+        <div class="proof-item">
+          <div class="proof-dot"></div>
+          <p><strong>Você decide.</strong> A plataforma mostra padrões. A escolha é sua.</p>
+        </div>
       </div>
     </div>
 
-    <p class="field-label">Você tem reserva de emergência guardada?</p>
-    <div class="reserve-row">
-      <button class="reserve-btn sel" data-reserve="false" onclick="selectReserve(this)">
-        Não tenho ainda
+    <div class="entry-right">
+      <p class="form-label">Quanto está sobrando por mês?</p>
+      <div class="amount-field">
+        <span class="amount-prefix">R$</span>
+        <input class="amount-input" type="text" id="monthly-amount" value="1.200" />
+        <span class="amount-suffix">/ mês</span>
+      </div>
+
+      <p class="form-label">Sua situação agora</p>
+      <div class="options-grid" id="sit-grid">
+        <div class="opt sel" data-situation="estabilidade" onclick="selectSit(this)">
+          <div class="opt-radio"></div>
+          <div class="opt-content">
+            <p class="opt-title">Estabilidade</p>
+            <p class="opt-desc">Emprego fixo, contas em dia, sem dívidas</p>
+          </div>
+        </div>
+        <div class="opt" data-situation="transicao" onclick="selectSit(this)">
+          <div class="opt-radio"></div>
+          <div class="opt-content">
+            <p class="opt-title">Transição</p>
+            <p class="opt-desc">Mudei de emprego ou virei autônomo recentemente</p>
+          </div>
+        </div>
+        <div class="opt" data-situation="acumulando" onclick="selectSit(this)">
+          <div class="opt-radio"></div>
+          <div class="opt-content">
+            <p class="opt-title">Acumulando</p>
+            <p class="opt-desc">Já tenho alguma reserva mas não sei o que fazer</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="form-label">Reserva de emergência</p>
+      <div class="reserve-row">
+        <button class="res-btn sel" data-reserve="false" onclick="selectRes(this)">Não tenho ainda</button>
+        <button class="res-btn" data-reserve="true" onclick="selectRes(this)">Sim, tenho</button>
+      </div>
+
+      <button class="btn-cta" id="btn-analyze" onclick="analyze()">
+        Ver o que os dados mostram →
       </button>
-      <button class="reserve-btn" data-reserve="true" onclick="selectReserve(this)">
-        Sim, tenho
-      </button>
+      <p class="form-note">Sem cadastro · Sem coleta de dados financeiros</p>
     </div>
 
-    <button class="btn-primary" id="btn-analyze" onclick="analyze()">
-      ver o que os dados mostram
-    </button>
-    <p class="entry-note">Sem cadastro. Sem coleta de dados financeiros. Você vê — e decide.</p>
   </div>
 </div>
 
 <!-- TELA 2: PAINEL -->
 <div id="screen-panel" class="screen">
-  <div class="panel-layout">
+  <div class="panel-wrap">
+
     <div class="sidebar">
-      <div class="sb-section">
-        <p class="sb-section-label">análise</p>
-        <div class="sb-item active" onclick="showTab('pattern')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          o padrão
+      <div class="sb-group">
+        <p class="sb-group-label">Análise</p>
+        <div class="sb-link active" onclick="showTab('pattern', this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+          O padrão
         </div>
-        <div class="sb-item" onclick="showTab('actions')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-          o que fizeram
+        <div class="sb-link" onclick="showTab('actions', this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 8 6 11 13 4"/></svg>
+          O que fizeram
         </div>
-        <div class="sb-item" onclick="showTab('concepts')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-          o que significa
-        </div>
-      </div>
-      <div class="sb-section">
-        <p class="sb-section-label">sobre</p>
-        <div class="sb-item" onclick="showTab('source')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          fonte dos dados
+        <div class="sb-link" onclick="showTab('concepts', this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13.5A2 2 0 014 11.5H14"/><path d="M4 2H14v14H4A2 2 0 012 14V4a2 2 0 012-2z"/></svg>
+          O que significa
         </div>
       </div>
-      <div class="sb-ctx" id="sb-context"></div>
+      <div class="sb-divider"></div>
+      <div class="sb-group">
+        <p class="sb-group-label">Dados</p>
+        <div class="sb-link" onclick="showTab('source', this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><line x1="8" y1="11" x2="8.01" y2="11"/></svg>
+          Fonte e limitações
+        </div>
+      </div>
+      <div class="sb-divider"></div>
+      <div class="sb-ctx" id="sb-ctx">
+        <p class="sb-ctx-label">Contexto</p>
+        <p class="sb-ctx-val" id="sb-ctx-val">—</p>
+      </div>
     </div>
 
     <div class="main">
-      <div id="loading" class="loading">Analisando seu perfil...</div>
+      <div id="loading" class="loading">Analisando perfil...</div>
       <div id="panel-content" style="display:none">
 
         <!-- TAB: PADRÃO -->
-        <div id="tab-pattern" class="tab-content">
-          <div class="main-header">
-            <h2 id="panel-headline"></h2>
-            <p class="main-source" id="panel-source"></p>
+        <div id="tab-pattern" class="tab">
+          <p class="main-eyebrow">Achado principal</p>
+          <h2 class="main-h" id="p-headline"></h2>
+          <p class="main-source" id="p-source"></p>
+
+          <div class="card featured">
+            <p class="card-label">O que os dados mostram</p>
+            <p id="p-finding"></p>
           </div>
-          <div class="insight featured">
-            <p class="insight-label">achado principal</p>
-            <p id="panel-finding"></p>
-          </div>
+
+          <div class="data-table" id="p-bars"></div>
+
           <div class="next-q">
-            <p class="next-q-label">próxima pergunta</p>
-            <p id="panel-next-q"></p>
+            <p class="next-q-label">Próxima pergunta</p>
+            <p class="next-q-text" id="p-nextq"></p>
           </div>
-          <button class="btn-secondary" onclick="goBack()">← nova consulta</button>
+
+          <button class="btn-back" onclick="goBack()">← Nova consulta</button>
         </div>
 
         <!-- TAB: O QUE FIZERAM -->
-        <div id="tab-actions" class="tab-content" style="display:none">
-          <div class="main-header">
-            <h2>O que pessoas na sua situação fizeram</h2>
-            <p class="main-source" id="panel-source-2"></p>
+        <div id="tab-actions" class="tab" style="display:none">
+          <p class="main-eyebrow">Comportamento observado</p>
+          <h2 class="main-h">O que pessoas na sua situação fizeram</h2>
+          <p class="main-source" id="p-source-2"></p>
+
+          <div class="card featured">
+            <p class="card-label">Ações e resultados</p>
+            <div class="action-list" id="p-actions"></div>
           </div>
-          <div class="insight featured">
-            <p class="insight-label">padrão observado</p>
-            <div class="actions-list" id="panel-actions"></div>
+
+          <div class="card">
+            <p class="card-label">O que acontece sem isso</p>
+            <p id="p-without"></p>
           </div>
-          <div class="insight">
-            <p class="insight-label">o que acontece sem isso</p>
-            <p id="panel-without"></p>
-          </div>
-          <button class="btn-secondary" onclick="goBack()">← nova consulta</button>
+
+          <button class="btn-back" onclick="goBack()">← Nova consulta</button>
         </div>
 
         <!-- TAB: GLOSSÁRIO -->
-        <div id="tab-concepts" class="tab-content" style="display:none">
-          <div class="main-header">
-            <h2>O que cada termo significa</h2>
-            <p class="main-source">Definições simples, sem jargão — no contexto da sua situação.</p>
+        <div id="tab-concepts" class="tab" style="display:none">
+          <p class="main-eyebrow">Glossário</p>
+          <h2 class="main-h">O que cada termo significa</h2>
+          <p class="main-source">No contexto da sua situação — sem jargão.</p>
+
+          <div class="card">
+            <p class="card-label">Termos desta análise</p>
+            <div id="p-concepts"></div>
           </div>
-          <div class="concepts-block" id="panel-concepts"></div>
-          <button class="btn-secondary" onclick="goBack()">← nova consulta</button>
+
+          <button class="btn-back" onclick="goBack()">← Nova consulta</button>
         </div>
 
         <!-- TAB: FONTE -->
-        <div id="tab-source" class="tab-content" style="display:none">
-          <div class="main-header">
-            <h2>Fonte dos dados</h2>
-          </div>
-          <div class="insight">
-            <p class="insight-label">pesquisa base</p>
+        <div id="tab-source" class="tab" style="display:none">
+          <p class="main-eyebrow">Transparência</p>
+          <h2 class="main-h">Fonte dos dados e limitações</h2>
+          <p class="main-source">O que sabemos — e o que ainda não sabemos.</p>
+
+          <div class="source-card">
+            <p class="source-card-label">Base de dados</p>
             <h3>Survey of Consumer Finances — Federal Reserve</h3>
-            <p>
-              Os padrões apresentados são derivados da Survey of Consumer Finances,
-              pesquisa aplicada pelo Federal Reserve americano com mais de 4.000 famílias
-              a cada três anos. Os dados de 2019 a 2022 foram analisados na pesquisa de
-              mestrado em Finance and Investments da Universidade de Massachusetts Boston.
-            </p>
+            <p>Pesquisa aplicada pelo Federal Reserve americano com mais de 4.000 famílias a cada três anos. Os dados de 2019 a 2022 foram analisados na pesquisa de mestrado em Finance and Investments da Universidade de Massachusetts Boston.</p>
           </div>
-          <div class="insight">
-            <p class="insight-label">o que não sabemos</p>
-            <h3>Limitações importantes</h3>
-            <p>
-              Os dados são americanos. O padrão pode variar no contexto brasileiro
-              por diferenças culturais, regulatórias e de mercado. Esta plataforma
-              usa o modelo como proxy — não como certeza. Os números são indicativos,
-              não previsões.
-            </p>
+
+          <div class="source-card">
+            <p class="source-card-label">Limitações importantes</p>
+            <h3>O que os dados não garantem</h3>
+            <p>Os dados são americanos. O padrão pode variar no Brasil por diferenças culturais, regulatórias e de mercado. Os números são indicativos — não previsões. Esta plataforma não substitui orientação financeira profissional.</p>
           </div>
-          <div class="insight">
-            <p class="insight-label">autora da pesquisa</p>
+
+          <div class="source-card">
+            <p class="source-card-label">Autora da pesquisa</p>
             <h3>Rosilaine Francisco</h3>
-            <p>
-              Master's in Finance and Investments, University of Massachusetts Boston.
-              Empreendedora e ex-CEO com quase vinte anos de experiência em gestão
-              financeira corporativa no Brasil.
-            </p>
+            <p>Master's in Finance and Investments, University of Massachusetts Boston. Beacon Graduate Student Leadership Award. CFA Program Student Scholarship, CFA Institute. Empreendedora e ex-CEO com quase vinte anos de experiência em gestão financeira corporativa no Brasil.</p>
           </div>
-          <button class="btn-secondary" onclick="goBack()">← nova consulta</button>
+
+          <button class="btn-back" onclick="goBack()">← Nova consulta</button>
         </div>
 
       </div>
@@ -506,20 +857,16 @@
 </div>
 
 <script>
-  let state = {
-    situation: "estabilidade",
-    has_reserve: false,
-    analysis: null
-  };
+  let state = { situation: 'estabilidade', has_reserve: false };
 
-  function selectSituation(el) {
-    document.querySelectorAll('.sit-card').forEach(c => c.classList.remove('sel'));
+  function selectSit(el) {
+    document.querySelectorAll('.opt').forEach(o => o.classList.remove('sel'));
     el.classList.add('sel');
     state.situation = el.dataset.situation;
   }
 
-  function selectReserve(el) {
-    document.querySelectorAll('.reserve-btn').forEach(b => b.classList.remove('sel'));
+  function selectRes(el) {
+    document.querySelectorAll('.res-btn').forEach(b => b.classList.remove('sel'));
     el.classList.add('sel');
     state.has_reserve = el.dataset.reserve === 'true';
   }
@@ -532,88 +879,78 @@
   async function analyze() {
     const btn = document.getElementById('btn-analyze');
     btn.disabled = true;
-    btn.textContent = 'analisando...';
-
-    const payload = {
-      trigger: "sobra_mensal",
-      situation: state.situation,
-      has_reserve: state.has_reserve,
-      monthly_amount: getAmount(),
-    };
+    btn.textContent = 'Analisando...';
 
     try {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          trigger: 'sobra_mensal',
+          situation: state.situation,
+          has_reserve: state.has_reserve,
+          monthly_amount: getAmount(),
+        })
       });
       const data = await res.json();
-      state.analysis = data;
       renderPanel(data);
     } catch(e) {
       btn.disabled = false;
-      btn.textContent = 'ver o que os dados mostram';
+      btn.textContent = 'Ver o que os dados mostram →';
       alert('Erro ao conectar. Verifique se o servidor está rodando.');
     }
   }
 
   function renderPanel(data) {
-    // Context sidebar
-    const reserveLabel = state.has_reserve ? 'com reserva' : 'sem reserva';
-    const amountFmt = new Intl.NumberFormat('pt-BR').format(getAmount());
-    document.getElementById('sb-context').innerHTML = `
-      <strong>sua situação</strong>
-      <p>R$ ${amountFmt}/mês · ${state.situation} · ${reserveLabel}</p>
-    `;
+    const amt = new Intl.NumberFormat('pt-BR').format(getAmount());
+    const res = state.has_reserve ? 'com reserva' : 'sem reserva';
+    document.getElementById('sb-ctx-val').textContent = `R$ ${amt}/mês · ${state.situation} · ${res}`;
 
-    // Padrão
-    document.getElementById('panel-headline').textContent = data.headline;
-    document.getElementById('panel-source').textContent = data.source;
-    document.getElementById('panel-source-2').textContent = data.source;
-    document.getElementById('panel-finding').textContent = data.finding;
-    document.getElementById('panel-next-q').textContent = data.next_question;
+    document.getElementById('p-headline').textContent = data.headline;
+    document.getElementById('p-source').textContent = data.source;
+    document.getElementById('p-source-2').textContent = data.source;
+    document.getElementById('p-finding').textContent = data.finding;
+    document.getElementById('p-nextq').textContent = data.next_question;
+    document.getElementById('p-without').textContent = data.what_happens_without;
 
-    // O que fizeram
-    const actionsEl = document.getElementById('panel-actions');
-    actionsEl.innerHTML = (data.what_they_did || []).map(a => `
-      <div class="action-item">
-        <div>
-          <p class="action-what">${a.action}</p>
-          <p class="action-time">${a.timeframe}</p>
-        </div>
-        <p class="action-outcome">${a.outcome}</p>
+    // Barras
+    const bars = document.getElementById('p-bars');
+    if (data.pattern_id === 'stable_no_reserve') {
+      bars.innerHTML = `
+        <div class="data-row"><span class="data-label">Mantiveram investimento (com reserva)</span><div class="data-bar"><div class="data-fill" style="width:71%"></div></div><span class="data-val">71%</span></div>
+        <div class="data-row"><span class="data-label">Resgataram antes de 12 meses</span><div class="data-bar"><div class="data-fill muted" style="width:29%"></div></div><span class="data-val">29%</span></div>
+        <div class="data-row"><span class="data-label">Mantiveram investimento (sem reserva)</span><div class="data-bar"><div class="data-fill muted" style="width:52%"></div></div><span class="data-val">52%</span></div>
+      `;
+    } else { bars.innerHTML = ''; }
+
+    // Ações
+    document.getElementById('p-actions').innerHTML = (data.what_they_did || []).map(a => `
+      <div class="action-row">
+        <div><p class="action-what">${a.action}</p><p class="action-when">${a.timeframe}</p></div>
+        <p class="action-result">${a.outcome}</p>
       </div>
     `).join('');
 
-    document.getElementById('panel-without').textContent = data.what_happens_without;
-
     // Glossário
-    const conceptsEl = document.getElementById('panel-concepts');
-    const concepts = data.concepts || {};
-    conceptsEl.innerHTML = `
-      <p class="concepts-label">termos usados nessa análise</p>
-      ${Object.values(concepts).map(c => `
-        <div class="concept-row">
-          <span class="concept-term">${c.term}</span>
-          <span class="concept-def">${c.definition}</span>
-        </div>
-      `).join('')}
-    `;
+    document.getElementById('p-concepts').innerHTML = Object.values(data.concepts || {}).map(c => `
+      <div class="gloss-row">
+        <span class="gloss-term">${c.term}</span>
+        <span class="gloss-def">${c.definition}</span>
+      </div>
+    `).join('');
 
-    // Mostrar painel
     document.getElementById('screen-entry').classList.remove('active');
     document.getElementById('screen-panel').classList.add('active');
     document.getElementById('loading').style.display = 'none';
     document.getElementById('panel-content').style.display = 'block';
-
-    showTab('pattern');
+    showTab('pattern', document.querySelector('.sb-link'));
   }
 
-  function showTab(tab) {
-    document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-    document.getElementById('tab-' + tab).style.display = 'block';
-    event.currentTarget && event.currentTarget.classList.add('active');
+  function showTab(id, el) {
+    document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
+    document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('tab-' + id).style.display = 'block';
+    if (el) el.classList.add('active');
   }
 
   function goBack() {
@@ -623,7 +960,7 @@
     document.getElementById('panel-content').style.display = 'none';
     const btn = document.getElementById('btn-analyze');
     btn.disabled = false;
-    btn.textContent = 'ver o que os dados mostram';
+    btn.textContent = 'Ver o que os dados mostram →';
   }
 </script>
 </body>
