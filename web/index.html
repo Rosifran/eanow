@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>e agora?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono&display=swap');
+
+  :root {
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --blue-dark: #0C447C;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --text-hint: #9b9b9b;
+    --border: rgba(0,0,0,0.12);
+    --border-strong: rgba(0,0,0,0.25);
+    --bg: #ffffff;
+    --bg-secondary: #f7f6f3;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    min-height: 100vh;
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 40px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .logo {
+    font-family: 'Lora', serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .logo span { color: var(--blue); }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── Telas ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── Entrada ── */
+  .entry {
+    max-width: 560px;
+    margin: 72px auto;
+    padding: 0 24px;
+  }
+  .kicker {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 16px;
+  }
+  .entry h1 {
+    font-family: 'Lora', serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .entry-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 40px;
+  }
+
+  .field-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .amount-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .amount-row span {
+    font-size: 22px;
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .amount-input {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px;
+    border: none;
+    border-bottom: 1.5px solid var(--border-strong);
+    background: transparent;
+    color: var(--text);
+    width: 160px;
+    padding: 4px 0;
+    outline: none;
+  }
+  .amount-input:focus { border-bottom-color: var(--blue); }
+  .amount-suffix { font-size: 13px; color: var(--text-hint); }
+
+  .sit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .sit-card {
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .sit-card:hover { border-color: var(--blue); }
+  .sit-card.sel { border: 1.5px solid var(--blue); background: var(--blue-light); }
+  .sit-card .sk {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-hint);
+    margin-bottom: 4px;
+  }
+  .sit-card p { font-size: 13px; line-height: 1.45; }
+
+  .reserve-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .reserve-btn {
+    flex: 1;
+    padding: 10px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--text);
+    transition: border-color 0.15s;
+  }
+  .reserve-btn:hover { border-color: var(--blue); }
+  .reserve-btn.sel { border: 1.5px solid var(--blue); background: var(--blue-light); color: var(--blue-dark); font-weight: 500; }
+
+  .btn-primary {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    font-size: 14px;
+    padding: 12px 28px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .entry-note {
+    font-size: 12px;
+    color: var(--text-hint);
+    margin-top: 12px;
+  }
+
+  /* ── Painel ── */
+  .panel-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - 53px);
+  }
+
+  .sidebar {
+    border-right: 0.5px solid var(--border);
+    padding: 24px 0;
+  }
+  .sb-section { padding: 0 16px; margin-bottom: 20px; }
+  .sb-section-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-hint);
+    margin-bottom: 8px;
+    padding: 0 4px;
+  }
+  .sb-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin-bottom: 2px;
+    transition: background 0.1s;
+  }
+  .sb-item:hover { background: var(--bg-secondary); }
+  .sb-item.active { background: var(--bg-secondary); color: var(--text); font-weight: 500; }
+  .sb-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  .sb-ctx {
+    margin: 16px 16px 0;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+  }
+  .sb-ctx strong { font-size: 12px; display: block; margin-bottom: 4px; }
+  .sb-ctx p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  .main {
+    padding: 32px 36px;
+    max-width: 680px;
+  }
+  .main-header { margin-bottom: 24px; }
+  .main-header h2 {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .main-source { font-size: 11.5px; color: var(--text-hint); }
+
+  .insight {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .insight.featured { border-color: var(--blue); border-width: 1.5px; }
+  .insight-label {
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-hint);
+    margin-bottom: 8px;
+  }
+  .insight.featured .insight-label { color: var(--blue); }
+  .insight h3 { font-size: 14px; font-weight: 500; margin-bottom: 6px; line-height: 1.4; }
+  .insight p { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+
+  .actions-list { margin: 6px 0 0; }
+  .action-item {
+    border-top: 0.5px solid var(--border);
+    padding: 10px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .action-item:first-child { border-top: none; }
+  .action-what { font-size: 13px; line-height: 1.55; }
+  .action-outcome { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+  .action-time { font-size: 11px; color: var(--text-hint); margin-top: 4px; }
+
+  .concepts-block {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-top: 12px;
+  }
+  .concepts-label {
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-hint);
+    margin-bottom: 10px;
+  }
+  .concept-row {
+    display: flex;
+    gap: 12px;
+    padding: 7px 0;
+    border-top: 0.5px solid var(--border);
+    align-items: flex-start;
+  }
+  .concept-row:first-of-type { border-top: none; }
+  .concept-term { font-size: 13px; font-weight: 500; min-width: 140px; }
+  .concept-def { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; }
+
+  .next-q {
+    background: var(--blue-light);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-top: 16px;
+  }
+  .next-q-label {
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  .next-q p { font-size: 14px; color: var(--blue-dark); line-height: 1.65; font-family: 'Lora', serif; font-style: italic; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 0.5px solid var(--border-strong);
+    font-size: 13px;
+    padding: 8px 18px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    margin-top: 24px;
+    transition: background 0.1s;
+  }
+  .btn-secondary:hover { background: var(--bg-secondary); }
+
+  .loading {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--text-hint);
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">e agora<span>?</span></div>
+  <div class="nav-links">
+    <a href="#">como funciona</a>
+    <a href="#">a pesquisa</a>
+  </div>
+</div>
+
+<!-- TELA 1: ENTRADA -->
+<div id="screen-entry" class="screen active">
+  <div class="entry">
+    <p class="kicker">Inteligência para decisão patrimonial</p>
+    <h1>Sobrou dinheiro.<br>E agora?</h1>
+    <p class="entry-sub">
+      Você já pagou o que tinha para pagar. Agora tem alguma coisa sobrando —
+      e o mercado financeiro não fala com você de um jeito que faça sentido.
+      A plataforma mostra o que pessoas na sua situação fizeram. Você decide.
+    </p>
+
+    <p class="field-label">Quanto está sobrando por mês, mais ou menos?</p>
+    <div class="amount-row">
+      <span>R$</span>
+      <input class="amount-input" type="text" id="monthly-amount" value="1.200" />
+      <span class="amount-suffix">/ mês</span>
+    </div>
+
+    <p class="field-label">Qual é a sua situação agora?</p>
+    <div class="sit-grid">
+      <div class="sit-card sel" data-situation="estabilidade" onclick="selectSituation(this)">
+        <p class="sk">estabilidade</p>
+        <p>Emprego fixo, contas em dia, sem dívidas</p>
+      </div>
+      <div class="sit-card" data-situation="transicao" onclick="selectSituation(this)">
+        <p class="sk">transição</p>
+        <p>Mudei de emprego ou virei autônomo recentemente</p>
+      </div>
+      <div class="sit-card" data-situation="acumulando" onclick="selectSituation(this)">
+        <p class="sk">acumulando</p>
+        <p>Já tenho alguma reserva mas não sei o que fazer</p>
+      </div>
+    </div>
+
+    <p class="field-label">Você tem reserva de emergência guardada?</p>
+    <div class="reserve-row">
+      <button class="reserve-btn sel" data-reserve="false" onclick="selectReserve(this)">
+        Não tenho ainda
+      </button>
+      <button class="reserve-btn" data-reserve="true" onclick="selectReserve(this)">
+        Sim, tenho
+      </button>
+    </div>
+
+    <button class="btn-primary" id="btn-analyze" onclick="analyze()">
+      ver o que os dados mostram
+    </button>
+    <p class="entry-note">Sem cadastro. Sem coleta de dados financeiros. Você vê — e decide.</p>
+  </div>
+</div>
+
+<!-- TELA 2: PAINEL -->
+<div id="screen-panel" class="screen">
+  <div class="panel-layout">
+    <div class="sidebar">
+      <div class="sb-section">
+        <p class="sb-section-label">análise</p>
+        <div class="sb-item active" onclick="showTab('pattern')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          o padrão
+        </div>
+        <div class="sb-item" onclick="showTab('actions')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          o que fizeram
+        </div>
+        <div class="sb-item" onclick="showTab('concepts')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          o que significa
+        </div>
+      </div>
+      <div class="sb-section">
+        <p class="sb-section-label">sobre</p>
+        <div class="sb-item" onclick="showTab('source')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          fonte dos dados
+        </div>
+      </div>
+      <div class="sb-ctx" id="sb-context"></div>
+    </div>
+
+    <div class="main">
+      <div id="loading" class="loading">Analisando seu perfil...</div>
+      <div id="panel-content" style="display:none">
+
+        <!-- TAB: PADRÃO -->
+        <div id="tab-pattern" class="tab-content">
+          <div class="main-header">
+            <h2 id="panel-headline"></h2>
+            <p class="main-source" id="panel-source"></p>
+          </div>
+          <div class="insight featured">
+            <p class="insight-label">achado principal</p>
+            <p id="panel-finding"></p>
+          </div>
+          <div class="next-q">
+            <p class="next-q-label">próxima pergunta</p>
+            <p id="panel-next-q"></p>
+          </div>
+          <button class="btn-secondary" onclick="goBack()">← nova consulta</button>
+        </div>
+
+        <!-- TAB: O QUE FIZERAM -->
+        <div id="tab-actions" class="tab-content" style="display:none">
+          <div class="main-header">
+            <h2>O que pessoas na sua situação fizeram</h2>
+            <p class="main-source" id="panel-source-2"></p>
+          </div>
+          <div class="insight featured">
+            <p class="insight-label">padrão observado</p>
+            <div class="actions-list" id="panel-actions"></div>
+          </div>
+          <div class="insight">
+            <p class="insight-label">o que acontece sem isso</p>
+            <p id="panel-without"></p>
+          </div>
+          <button class="btn-secondary" onclick="goBack()">← nova consulta</button>
+        </div>
+
+        <!-- TAB: GLOSSÁRIO -->
+        <div id="tab-concepts" class="tab-content" style="display:none">
+          <div class="main-header">
+            <h2>O que cada termo significa</h2>
+            <p class="main-source">Definições simples, sem jargão — no contexto da sua situação.</p>
+          </div>
+          <div class="concepts-block" id="panel-concepts"></div>
+          <button class="btn-secondary" onclick="goBack()">← nova consulta</button>
+        </div>
+
+        <!-- TAB: FONTE -->
+        <div id="tab-source" class="tab-content" style="display:none">
+          <div class="main-header">
+            <h2>Fonte dos dados</h2>
+          </div>
+          <div class="insight">
+            <p class="insight-label">pesquisa base</p>
+            <h3>Survey of Consumer Finances — Federal Reserve</h3>
+            <p>
+              Os padrões apresentados são derivados da Survey of Consumer Finances,
+              pesquisa aplicada pelo Federal Reserve americano com mais de 4.000 famílias
+              a cada três anos. Os dados de 2019 a 2022 foram analisados na pesquisa de
+              mestrado em Finance and Investments da Universidade de Massachusetts Boston.
+            </p>
+          </div>
+          <div class="insight">
+            <p class="insight-label">o que não sabemos</p>
+            <h3>Limitações importantes</h3>
+            <p>
+              Os dados são americanos. O padrão pode variar no contexto brasileiro
+              por diferenças culturais, regulatórias e de mercado. Esta plataforma
+              usa o modelo como proxy — não como certeza. Os números são indicativos,
+              não previsões.
+            </p>
+          </div>
+          <div class="insight">
+            <p class="insight-label">autora da pesquisa</p>
+            <h3>Rosilaine Francisco</h3>
+            <p>
+              Master's in Finance and Investments, University of Massachusetts Boston.
+              Empreendedora e ex-CEO com quase vinte anos de experiência em gestão
+              financeira corporativa no Brasil.
+            </p>
+          </div>
+          <button class="btn-secondary" onclick="goBack()">← nova consulta</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let state = {
+    situation: "estabilidade",
+    has_reserve: false,
+    analysis: null
+  };
+
+  function selectSituation(el) {
+    document.querySelectorAll('.sit-card').forEach(c => c.classList.remove('sel'));
+    el.classList.add('sel');
+    state.situation = el.dataset.situation;
+  }
+
+  function selectReserve(el) {
+    document.querySelectorAll('.reserve-btn').forEach(b => b.classList.remove('sel'));
+    el.classList.add('sel');
+    state.has_reserve = el.dataset.reserve === 'true';
+  }
+
+  function getAmount() {
+    const raw = document.getElementById('monthly-amount').value.replace(/\./g, '').replace(',', '.');
+    return parseFloat(raw) || 0;
+  }
+
+  async function analyze() {
+    const btn = document.getElementById('btn-analyze');
+    btn.disabled = true;
+    btn.textContent = 'analisando...';
+
+    const payload = {
+      trigger: "sobra_mensal",
+      situation: state.situation,
+      has_reserve: state.has_reserve,
+      monthly_amount: getAmount(),
+    };
+
+    try {
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      state.analysis = data;
+      renderPanel(data);
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = 'ver o que os dados mostram';
+      alert('Erro ao conectar. Verifique se o servidor está rodando.');
+    }
+  }
+
+  function renderPanel(data) {
+    // Context sidebar
+    const reserveLabel = state.has_reserve ? 'com reserva' : 'sem reserva';
+    const amountFmt = new Intl.NumberFormat('pt-BR').format(getAmount());
+    document.getElementById('sb-context').innerHTML = `
+      <strong>sua situação</strong>
+      <p>R$ ${amountFmt}/mês · ${state.situation} · ${reserveLabel}</p>
+    `;
+
+    // Padrão
+    document.getElementById('panel-headline').textContent = data.headline;
+    document.getElementById('panel-source').textContent = data.source;
+    document.getElementById('panel-source-2').textContent = data.source;
+    document.getElementById('panel-finding').textContent = data.finding;
+    document.getElementById('panel-next-q').textContent = data.next_question;
+
+    // O que fizeram
+    const actionsEl = document.getElementById('panel-actions');
+    actionsEl.innerHTML = (data.what_they_did || []).map(a => `
+      <div class="action-item">
+        <div>
+          <p class="action-what">${a.action}</p>
+          <p class="action-time">${a.timeframe}</p>
+        </div>
+        <p class="action-outcome">${a.outcome}</p>
+      </div>
+    `).join('');
+
+    document.getElementById('panel-without').textContent = data.what_happens_without;
+
+    // Glossário
+    const conceptsEl = document.getElementById('panel-concepts');
+    const concepts = data.concepts || {};
+    conceptsEl.innerHTML = `
+      <p class="concepts-label">termos usados nessa análise</p>
+      ${Object.values(concepts).map(c => `
+        <div class="concept-row">
+          <span class="concept-term">${c.term}</span>
+          <span class="concept-def">${c.definition}</span>
+        </div>
+      `).join('')}
+    `;
+
+    // Mostrar painel
+    document.getElementById('screen-entry').classList.remove('active');
+    document.getElementById('screen-panel').classList.add('active');
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('panel-content').style.display = 'block';
+
+    showTab('pattern');
+  }
+
+  function showTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+    document.getElementById('tab-' + tab).style.display = 'block';
+    event.currentTarget && event.currentTarget.classList.add('active');
+  }
+
+  function goBack() {
+    document.getElementById('screen-panel').classList.remove('active');
+    document.getElementById('screen-entry').classList.add('active');
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('panel-content').style.display = 'none';
+    const btn = document.getElementById('btn-analyze');
+    btn.disabled = false;
+    btn.textContent = 'ver o que os dados mostram';
+  }
+</script>
+</body>
+</html>
