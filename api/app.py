@@ -20,6 +20,11 @@ def index():
     return send_from_directory("../web", "index.html")
 
 
+@app.route("/script")
+def script_page():
+    return send_from_directory("../web", "script.html")
+
+
 @app.route("/api/analyze", methods=["POST"])
 def analyze():
     """
